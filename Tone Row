@@ -1,0 +1,168 @@
+from operator import contains
+import random
+from re import X
+
+#Crete a Tone Row - Creates a tone row
+#Invert my Tone Row, Inverts the Intervals between notes
+#Retrograde my Tone Row, retrogrades/reveres the order of the tone row
+#Retograde and Invert my Tone Row, both retrogrades and inverts the tone row,
+#Transpose my Tone Row, enter the number semitones up you want to move it, use a negative number to move it down
+
+#To input your tone row, seperate the notes by a space, a use a # afterwards and a b for a flat. no double flat/sharps, Capital for first Letter
+
+
+#dont worry about this
+vipnum=[]
+
+#fuction turning note names into intergers
+def number(yes):
+    for i in range(len(yes)):
+        if yes[i] == "C" or yes[i] == "B#":
+            yes[i] = 12
+        elif yes[i] == "C#" or yes[i] == "Db":
+            yes[i] = 13
+        elif yes[i] == "D":
+            yes[i] = 14
+        elif yes[i] == "D#" or yes[i] == "Eb":
+            yes[i] = 15
+        elif yes[i] == "E"or yes[i] == "Fb":
+            yes[i] = 16
+        elif yes[i] == "E#" or yes[i] == "F":
+            yes[i] = 17
+        elif yes[i] == "F#" or yes[i] == "Gb":
+            yes[i] = 18
+        elif yes[i] == "G":
+            yes[i] = 19
+        elif yes[i] == "G#" or yes[i] == "Ab":
+            yes[i] = 20
+        elif yes[i] == "A":
+            yes[i] = 21
+        elif yes[i] == "A#" or yes[i] == "Bb":
+            yes[i] = 22
+        elif yes[i] == "B" or yes[i] == "Cb":
+            yes[i] = 23
+    return yes
+
+#function returning numbers to note names
+def notation(si):
+    for i in range(len(si)):
+        if si[i] == 12:
+            si[i] = "C"
+        elif si[i] == 13:
+            si[i] = "Db"            
+        elif si[i] == 14:
+            si[i] = "D"            
+        elif si[i] == 15:
+            si[i] = "Eb"            
+        elif si[i] == 16:
+            si[i] = "E"            
+        elif si[i] == 17:
+            si[i] = "F"            
+        elif si[i] == 18:
+            si[i] = "Gb"           
+        elif si[i] == 19:
+            si[i] = "G"           
+        elif si[i] == 20:
+            si[i] = "Ab"            
+        elif si[i] == 21:
+            si[i] = "A"            
+        elif si[i] == 22:
+            si[i] = "Bb"            
+        elif si[i] == 23:
+            si[i] = "B"
+    return si
+
+#get random
+def randomise():
+    rand = []
+    while len(rand)< 12:
+        x = random.randrange(12, 24)
+        if x not in rand:
+            rand.append(x)
+    return rand
+
+#pretty simple just reversez it
+def retrograde(hey):
+    hey.reverse()
+    return hey
+
+#so
+def invert(c):
+    #the first note always stays the same
+    d = [c[0]]
+    #then the other 11 letters, hence the minus 1
+    for i in range(len(c)-1):
+        #add the difference between the number after it to the number before it, i swear this is right
+        x = d[i] + (int(c[i])-int(c[i+1]))
+        #if its smaller than 12, make it bigger
+        if x < 12:
+            d.append(x + 12)
+        #if its larger than 23 make it smaller
+        elif x > 23:
+            d.append(x - 12)
+        else:
+            d.append(x)
+    return(d)
+
+def transpose(c, e):
+    d=[]
+    for i in range(len(c)):
+        x = c[i] + e
+        #if e is a really large poitive or negative value this could be nessasary
+        while x < 12:
+            x = x + 12 
+        while x > 23:
+            x = x - 12
+        d.append(x)
+    return(d)
+
+#what sir would say the driver code
+#this was really simple 20mins ago
+while True:
+    goal = input("What do you want to do? ").lower()
+    #randomise a tone row
+    if goal == "create a tone row":
+        if len(vipnum) == 0:
+            x = notation(randomise())
+            print(*x)
+            if input('Do you wish to make changes to this tone row? ').lower() != "yes":
+                break
+            else:
+                vipnum = x
+        else: 
+            print('error')
+    #retrograde that row
+    elif goal == "retrograde my tone row":
+        if len(vipnum) == 0:
+            print(*retrograde(input("Input your tone row: ").split(" ")))
+        else:
+            print(*retrograde(vipnum.lower))
+        break
+    #invert that row
+    elif goal == "invert my tone row":
+        if len(vipnum) == 0:
+            print(*notation(invert(number(input("Input your tone row: ").split(" ")))))
+        else:
+            print(*notation(invert(number(vipnum))))
+        break
+    #double hit that row
+    elif goal == "retrograde and invert my tone row":
+        if len(vipnum) == 0:
+            print(*retrograde(notation(invert(number(input("Input your tone row: ").split(" "))))))
+        else:
+            print(*retrograde(notation(invert(number(vipnum)))))
+        break
+    #transpose it like a clarinet? ig im tired
+    elif goal == "transpose my tone row":
+        if len(vipnum) == 0:
+            x = notation(transpose(number(input("Input your tone row: ").split(" ")), int(input('How much do you want to Transpose your tone row by? ')))) 
+            print(*x)
+        else:
+            x = notation(transpose(number(vipnum), int(input('How much do you want to Transpose your tone row by? '))))
+            print(*x )
+        if input('Do you wish to make changes to this tone row? ').lower() != "yes":
+            break
+        else:
+            vipnum = x
+    else:
+        print("Please check your spelling of the command, and double check it is a command I can acomplish")
