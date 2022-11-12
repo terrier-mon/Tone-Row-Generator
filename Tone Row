@@ -2,7 +2,7 @@ from operator import contains
 import random
 from re import X
 
-#Crete a Tone Row - Creates a tone row
+#Create a Tone Row - Creates a tone row
 #Invert my Tone Row, Inverts the Intervals between notes
 #Retrograde my Tone Row, retrogrades/reveres the order of the tone row
 #Retograde and Invert my Tone Row, both retrogrades and inverts the tone row,
@@ -136,7 +136,7 @@ while True:
         if len(vipnum) == 0:
             print(*retrograde(input("Input your tone row: ").split(" ")))
         else:
-            print(*retrograde(vipnum.lower))
+            print(*retrograde(vipnum))
         break
     #invert that row
     elif goal == "invert my tone row":
@@ -145,10 +145,10 @@ while True:
         else:
             print(*notation(invert(number(vipnum))))
         break
-    #double hit that row
+    #double hit that row. BUT CHANGE TO ORDER FROM AROUND
     elif goal == "retrograde and invert my tone row":
         if len(vipnum) == 0:
-            print(*retrograde(notation(invert(number(input("Input your tone row: ").split(" "))))))
+            print(notation(invert(number(*retrograde(input("Input your tone row: ").split(" "))))))
         else:
             print(*retrograde(notation(invert(number(vipnum)))))
         break
